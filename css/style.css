@@ -327,6 +327,8 @@ ul {
   display: flex;
   gap: 1rem;
   margin-bottom: 3rem;
+  position: relative;
+  z-index: 20;
 }
 
 .hero-stats {
@@ -908,6 +910,44 @@ ul {
   transform: translateX(-5px);
 }
 
+/* Animated Toppers Button */
+.animated-btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(45deg, var(--primary), #fbbf24, var(--primary));
+  background-size: 200% auto;
+  color: #020617 !important;
+  animation: pulseGlow 2s linear infinite, gradientMove 3s ease infinite;
+  border: none;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+  transition: all 0.3s ease;
+}
+
+.animated-btn:hover {
+  transform: scale(1.05);
+  background-position: right center;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(245, 158, 11, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Animations */
 .fade-in {
   opacity: 0;
@@ -986,11 +1026,15 @@ ul {
     gap: 1.5rem;
     border-bottom: 1px solid var(--border-light);
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-    transition: clip-path 0.4s ease-in-out;
+    transition: clip-path 0.4s ease-in-out, visibility 0.4s;
+    visibility: hidden;
+    pointer-events: none;
   }
   
   .nav-links.active {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    visibility: visible;
+    pointer-events: auto;
   }
   
   .mobile-menu-btn {
