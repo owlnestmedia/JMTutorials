@@ -155,6 +155,13 @@ ul {
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transform: translateZ(0); /* Fix for WebKit backdrop-filter input bug */
+}
+
+.glass-card input, .glass-card textarea, .glass-card select, .glass-card button, .glass-card a {
+  position: relative;
+  z-index: 50;
+  transform: translateZ(0);
 }
 
 .hover-lift {
@@ -1049,5 +1056,17 @@ ul {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+  }
+}
+
+/* --- Ironclad Mobile Clickability Fixes --- */
+.hero-bg, .gradient-sphere {
+  pointer-events: none !important;
+  z-index: -10 !important;
+}
+
+@media (max-width: 768px) {
+  .nav-links:not(.active) {
+    display: none !important; /* Forces total removal of invisible overlay */
   }
 }
