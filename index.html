@@ -20,6 +20,42 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/style.css?v=3">
+
+    <!-- Emergency Mobile Hitbox & Interactivity Fix (Bypasses CSS Cache Constraints) -->
+    <style>
+        /* Globally override broken WebKit hit-testing and glassmorphism proxy issues */
+        @media screen and (max-width: 992px) {
+            .hero-bg, .gradient-sphere {
+                z-index: -100 !important;
+                pointer-events: none !important;
+            }
+            .nav-links:not(.active) {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            .glass-card, .navbar {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                transform: none !important;
+            }
+            .glass-card {
+                background: rgba(15, 23, 42, 0.95) !important;
+            }
+            .btn, a, button, input, textarea, select {
+                position: relative !important;
+                z-index: 1000 !important;
+                cursor: pointer !important;
+                pointer-events: auto !important;
+                -webkit-user-select: auto !important;
+                user-select: auto !important;
+                border: 1px solid var(--primary) !important; /* Visual debugging: highlights them slightly if activated */
+            }
+            .navbar { z-index: 9999 !important; }
+            .wa-widget-container { z-index: 9999 !important; pointer-events: none !important; }
+            .wa-chat-box.active { pointer-events: auto !important; }
+            .floating-wa { pointer-events: auto !important; }
+        }
+    </style>
 </head>
 
 <body>
