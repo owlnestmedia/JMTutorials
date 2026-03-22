@@ -1069,4 +1069,21 @@ ul {
   .nav-links:not(.active) {
     display: none !important; /* Forces total removal of invisible overlay */
   }
+  
+  /* Disable glass effects on mobile to prevent WebKit input capture bugs entirely */
+  .glass-card, .navbar {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+  }
+  .glass-card {
+    background: rgba(30, 41, 59, 0.98) !important;
+  }
+  .navbar {
+    background: rgba(15, 23, 42, 0.98) !important;
+  }
+  .visual-badge {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
 }
