@@ -85,6 +85,62 @@ document.addEventListener('DOMContentLoaded', () => {
         appearOnScroll.observe(fader);
     });
 
+    // Number Counter Animation
+    const stats = document.querySelectorAll('.stat-number');
+    let counted = false;
+
+    const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !counted) {
+                stats.forEach(stat => {
+                    const target = +stat.getAttribute('data-target');
+                    const duration = 2000; // 2 seconds
+                    const increment = target / (duration / 16); 
+                    
+                    let current = 0;
+                    const updateCounter = () => {
+                        current += increment;
+                        if (current < target) {
+                            stat.innerText = Math.ceil(current);
+                            requestAnimationFrame(updateCounter);
+                        } else {
+                            stat.innerText = target + (target > 50 ? '+' : '');
+                        }
+                    };
+                    updateCounter();
+                });
+                counted = true;
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    // Check if stats section exists before observing
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        statObserver.observe(statsSection);
+    }
+
+    // FAQ Accordion Logic
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            const isActive = question.classList.contains('active');
+            
+            // Close all answers
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.classList.remove('active');
+                q.nextElementSibling.style.maxHeight = null;
+            });
+            
+            // Open clicked answer if it was not active
+            if (!isActive) {
+                question.classList.add('active');
+                answer.style.maxHeight = answer.scrollHeight + "px";
+            }
+        });
+    });
+
     // WhatsApp Form Submission (AI Integration)
     const waForm = document.getElementById('wa-form');
     if (waForm) {
