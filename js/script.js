@@ -87,38 +87,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Number Counter Animation
     const stats = document.querySelectorAll('.stat-number');
-    let counted = false;
-
-    const statObserver = new IntersectionObserver((entries) => {
+    
+    const statObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && !counted) {
-                stats.forEach(stat => {
-                    const target = +stat.getAttribute('data-target');
-                    const duration = 2000; // 2 seconds
-                    const increment = target / (duration / 16); 
-                    
-                    let current = 0;
-                    const updateCounter = () => {
-                        current += increment;
-                        if (current < target) {
-                            stat.innerText = Math.ceil(current);
-                            requestAnimationFrame(updateCounter);
-                        } else {
-                            stat.innerText = target + (target > 50 ? '+' : '');
-                        }
-                    };
-                    updateCounter();
-                });
-                counted = true;
+            if (entry.isIntersecting) {
+                const stat = entry.target;
+                const targetAttr = stat.getAttribute('data-target');
+                if (!targetAttr) return; // Skip if no data-target
+                
+                const target = parseFloat(targetAttr);
+                const hasDecimal = targetAttr.includes('.');
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); 
+                
+                let current = 0;
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        stat.innerText = hasDecimal ? current.toFixed(1) : Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        stat.innerText = hasDecimal ? target.toFixed(1) : target + (target > 50 ? '+' : '');
+                    }
+                };
+                updateCounter();
+                
+                // Stop observing this specific element once animated
+                observer.unobserve(stat);
             }
         });
     }, { threshold: 0.5 });
     
-    // Check if stats section exists before observing
-    const statsSection = document.querySelector('.stats-section');
-    if (statsSection) {
-        statObserver.observe(statsSection);
-    }
+    stats.forEach(stat => {
+        statObserver.observe(stat);
+    });
 
     // FAQ Accordion Logic
     const faqQuestions = document.querySelectorAll('.faq-question');
